@@ -1,0 +1,19 @@
+{
+  "name": "pelias-NAME",
+  "version": "0.0.0",
+  "description": "DESCRIPTION",
+  "main": "index.js",
+  "devDependencies": {
+    "precommit-hook": "1.0.7"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pelias/NAME"
+  },
+  "author": "mapzen",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pelias/NAME/issues"
+  },
+  "homepage": "https://github.com/pelias/NAME"
+}
