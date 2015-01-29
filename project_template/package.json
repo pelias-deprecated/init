@@ -2,7 +2,7 @@
   "name": "pelias-{{name}}",
   "version": "0.0.0",
   "description": "{{description}}",
-  "keywords": [{{keywords|join}}],
+  "keywords": [{{keywords}}],
   "author": "mapzen",
   "main": "index.js",{{if tests}}
   "scripts": {
