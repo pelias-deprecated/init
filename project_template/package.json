@@ -1,19 +1,25 @@
 {
-  "name": "pelias-NAME",
+  "name": "pelias-{{name}}",
   "version": "0.0.0",
-  "description": "DESCRIPTION",
-  "main": "index.js",
-  "devDependencies": {
-    "precommit-hook": "1.0.7"
+  "description": "{{description}}",
+  "keywords": [{{keywords|join}}],
+  "author": "mapzen",
+  "main": "index.js",{{if tests}}
+  "scripts": {
+    "test": "node test/test.js | tap-spec"
+  },
+  {{/if}}"devDependencies": {
+    "precommit-hook": "1.0.7"{{if tests}},
+    "tape": "3.0.3",
+    "tap-spec": "2.1.2"{{/if}}
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/pelias/NAME"
+    "url": "https://github.com/pelias/{{name}}"
   },
-  "author": "mapzen",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/pelias/NAME/issues"
+    "url": "https://github.com/pelias/{{name}}/issues"
   },
-  "homepage": "https://github.com/pelias/NAME"
+  "homepage": "https://github.com/pelias/{{name}}"
 }
