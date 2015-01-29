@@ -34,7 +34,8 @@ prompt.get(
   schema,
   function ( err, input ){
     if( err ){
-      return onErr( err );
+      console.error( err );
+      process.exit( 1 );
     }
     initializeProject(
       input.name,
@@ -70,11 +71,11 @@ function initializeProject( name, description, keywords, tests ){
   var packageJson = require( getTemplateFilePath( 'package.json' ) );
   if( tests ){
     packageJson.scripts = {
-      test: "node test/test.js | tap-spec"
+      test: 'node test/test.js | tap-spec'
     };
 
-    packageJson.devDependencies.tape = "3.0.3";
-    packageJson.devDependencies[ "tap-spec" ] = "2.1.2";
+    packageJson.devDependencies.tape = '3.0.3';
+    packageJson.devDependencies[ 'tap-spec' ] = '2.1.2';
 
     fs.mkdirSync( 'test' );
     copyTemplateFile( 'test/test.js' );
