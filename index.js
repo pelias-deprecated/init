@@ -1,3 +1,5 @@
+#! /usr/bin/env node
+
 /**
  * @file An interactive CLI script for initializing new Pelias projects, to
  *    spare developers from having to reinstantiate all of the boilerplate all
@@ -55,6 +57,9 @@ var markup = require( 'markup-js' );
   );
 })();
 
+/**
+ * Get the absolute path of a file in `project_template/`.
+ */
 function getTemplateFilePath( filePath ){
   return path.join( __dirname, 'project_template', filePath );
 }
@@ -93,10 +98,9 @@ function initializeProject( name, description, keywords, tests ){
   fs.mkdirSync( name );
   process.chdir( name );
 
-  var filesToCopy = [ '.gitignore', '.jshintignore', '.jshintrc' ];
-  filesToCopy.forEach( function copyFile( filePath ){
-    copyTemplateFile( filePath );
-  });
+  [ '.jshintignore', '.jshintrc' ].forEach( copyTemplateFile );
+  fs.createReadStream( getTemplateFilePath( 'gitignore' ) )
+    .pipe( fs.createWriteStream( '.gitignore' ) );
 
   var readmeStr = readFormatFileSync(
     'README.md', { name: name, description: description }
