@@ -1,5 +1,7 @@
 /**
- * @file
+ * @file An interactive CLI script for initializing new Pelias projects, to
+ *    spare developers from having to reinstantiate all of the boilerplate all
+ *    the time.
  */
 
 'use strict';
@@ -10,6 +12,9 @@ var path = require( 'path' );
 var childProcess = require( 'child_process' );
 var markup = require( 'markup-js' );
 
+/**
+ * Configure and initialize the CLI prompt.
+ */
 (function initPrompt(){
   prompt.start();
 
@@ -54,16 +59,36 @@ function getTemplateFilePath( filePath ){
   return path.join( __dirname, 'project_template', filePath );
 }
 
+/**
+ * Copy a file from the script's `project_template/` directory to the CWD.
+ */
 function copyTemplateFile( filePath ){
   fs.createReadStream( getTemplateFilePath( filePath ) )
     .pipe( fs.createWriteStream( filePath ) );
 }
 
+/**
+ * @param {string} filePath The path of a `Markup-js` template file inside
+ *    `project_template/`.
+ * @param {object} formatObj The object to inject into the template file with
+ *    `Markup.up()`.
+ * @return {string} The template with `formatObj` injected.
+ */
 function readFormatFileSync( filePath, formatObj ){
   var corpus = fs.readFileSync( getTemplateFilePath( filePath ) ).toString();
   return markup.up( corpus, formatObj );
 }
 
+/**
+ * Create a project file/directory tree, and inject content like the project
+ * name and description where relevant.
+ *
+ * @param {string} name The name of the project.
+ * @param {string} description An ideally brief (one sentence) description of
+ *    the project.
+ * @param {array of string} keywords Keywords to describe the project.
+ * @param {boolean} tests Whether or not to initialize unit tests.
+ */
 function initializeProject( name, description, keywords, tests ){
   fs.mkdirSync( name );
   process.chdir( name );
@@ -102,6 +127,11 @@ function initializeProject( name, description, keywords, tests ){
   });
   fs.writeFileSync( 'package.json', strPkgJson );
 
+  /**
+   * Run `git init` and then `npm install` (in the background, to prevent the
+   * user from waiting). These must be executed in sequential order, to allow
+   * the installation of `precommit-hook` to register a Git hook.
+   */
   childProcess.exec( 'git init', function cb(){
     var procOpts = {
       detached: true,
