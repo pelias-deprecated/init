@@ -38,6 +38,10 @@ var markup = require( 'markup-js' );
     }
   };
 
+  prompt.message = '';
+  prompt.delimiter = ':';
+  prompt.colors = false;
+
   prompt.get(
     schema,
     function ( err, input ){
