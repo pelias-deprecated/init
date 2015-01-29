@@ -7,8 +7,8 @@
 var prompt = require( 'prompt' );
 var fs = require( 'fs' );
 var path = require( 'path' );
-var util = require( 'util' );
 var childProcess = require( 'child_process' );
+var markup = require( 'markup-js' );
 
 prompt.start();
 
@@ -21,7 +21,7 @@ var schema = {
     },
     description: {},
     keywords: {
-      description: 'Comma-separated list of keywords.'
+      description: 'Comma-separated list of keywords'
     },
     tests: {
       description: 'Initialize unit-tests? [yn]',
@@ -57,6 +57,11 @@ function copyTemplateFile( filePath ){
     .pipe( fs.createWriteStream( filePath ) );
 }
 
+function readFormatFileSync( filePath, formatObj ){
+  var corpus = fs.readFileSync( getTemplateFilePath( filePath ) ).toString();
+  return markup.up( corpus, formatObj );
+}
+
 function initializeProject( name, description, keywords, tests ){
   fs.mkdirSync( name );
   process.chdir( name );
@@ -66,33 +71,26 @@ function initializeProject( name, description, keywords, tests ){
     copyTemplateFile( filePath );
   });
 
-  fs.writeFile( 'README.md', util.format( '# %s\n%s\n', name, description ) );
+  var readmeStr = readFormatFileSync(
+    'README.md', { name: name, description: description }
+  );
+  fs.writeFileSync( 'README.md', readmeStr );
 
-  var packageJson = require( getTemplateFilePath( 'package.json' ) );
   if( tests ){
-    packageJson.scripts = {
-      test: 'node test/test.js | tap-spec'
-    };
-
-    packageJson.devDependencies.tape = '3.0.3';
-    packageJson.devDependencies[ 'tap-spec' ] = '2.1.2';
-
     fs.mkdirSync( 'test' );
     copyTemplateFile( 'test/test.js' );
     copyTemplateFile( '.travis.yml' );
   }
 
-  packageJson.name = 'pelias-' + name;
-  packageJson.description = description;
-  packageJson.keywords = keywords;
-
-  var githubUrl = 'https://github.com/pelias/' + name;
-  packageJson.repository = githubUrl;
-  packageJson.bugs.url = githubUrl + '/issues';
-  packageJson.homepage = githubUrl;
-
-  var strPackageJson = JSON.stringify( packageJson, undefined, 2 ) + '\n';
-  fs.writeFileSync( 'package.json', strPackageJson );
+  var strPkgJson = readFormatFileSync( 'package.json', {
+    name: name,
+    description: description,
+    keywords: keywords.map( function quote( str ){
+      return '"' + str + '"';
+    }),
+    tests: tests
+  });
+  fs.writeFileSync( 'package.json', strPkgJson );
 
   childProcess.exec( 'git init', function cb(){
     var procOpts = {
