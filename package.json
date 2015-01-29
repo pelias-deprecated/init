@@ -1,9 +1,12 @@
 {
   "name": "pelias-init",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "A CLI tool for initializing new Pelias projects.",
-  "main": "index.js",
-  "preferGlobal": true,
+  "keywords": [
+    "pelias",
+    "project",
+    "template"
+  ],
   "dependencies": {
     "markup-js": "1.5.21",
     "prompt": "0.2.14"
@@ -11,15 +14,15 @@
   "devDependencies": {
     "precommit-hook": "1.0.7"
   },
+  "preferGlobal": true,
+  "bin": {
+    "pelias-init": "./index.js"
+  },
+  "main": "index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/pelias/init"
   },
-  "keywords": [
-    "pelias",
-    "project",
-    "template"
-  ],
   "author": "mapzen",
   "license": "MIT",
   "bugs": {
