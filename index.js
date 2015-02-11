@@ -23,11 +23,14 @@ var markup = require( 'markup-js' );
   var schema = {
     properties: {
       name: {
+        description: 'repo name',
         pattern: /^[a-z0-9._-]*$/i,
         message: 'Valid name characters: [a-zA-Z0-9._-]',
         required: true
       },
-      description: {},
+      description: {
+        description: 'Sentence description'
+      },
       keywords: {
         description: 'Comma-separated list of keywords'
       },
