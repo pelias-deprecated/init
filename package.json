@@ -1,6 +1,6 @@
 {
   "name": "pelias-init",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A CLI tool for initializing new Pelias projects.",
   "keywords": [
     "pelias",
