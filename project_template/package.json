@@ -9,9 +9,9 @@
     "test": "node test/test.js | tap-spec"
   },
   {{/if}}"devDependencies": {
-    "precommit-hook": "*"{{if tests}},
-    "tape": "*",
-    "tap-spec": "*"{{/if}}
+    "precommit-hook": "1.0.7"{{if tests}},
+    "tape": "3.0.3",
+    "tap-spec": "2.1.2"{{/if}}
   },
   "repository": {
     "type": "git",
